@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Password Game</title>
+    <!-- favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+    <link rel="stylesheet" href="/src/index.css">
+    <!--JS-->
+    <script src="/src/index.js" defer></script>
+  </head>
+
+  <body>
+    <noscript>
+      <div class="notification is-danger">
+        <strong>Please Note:</strong> Website will not run without Javascript!
+      </div>
+    </noscript>
+    <header class="hero is-primary">
+      <div class="hero-body">
+        <div class="container">
+          <picture class="image">
+            <source media="(min-width:1200px)" srcset="https://via.placeholder.com/1200x90.png?text=Password+1200x90">
+            <source media="(min-width:650px)" srcset="https://via.placeholder.com/650x90.png?text=Password+650x90">
+            <source media="(min-width:465px)" srcset="https://via.placeholder.com/465x90.png?text=Password+465x90">
+            <img src="https://via.placeholder.com/150x90?text=Password=150x90" alt="logo" style="width:auto;">
+          </picture>
+          <h1 class="title">Password</h1>
+          <h2 class="subtitle"> Can you get the word in 10 trys!</h2>
+        </div>
+      </div>
+    </div>
+    </header>
+
+    <section class="section is-hidden" id="info_section" >
+      <div class="container">
+        <div class="columns">
+          <div class="column">
+            <p class="notification is-primary">Game ID:</p>
+          </div>
+          <div class="column">
+            <p class="notification is-info">abc-123</p>
+          </div>
+          <div class="column">
+            <p class="notification is-primary">Tries Left:</p>
+          </div>
+          <div class="column" id="lives_counter">
+            <p class="notification is-info">10</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="start_game_section">
+      <div class="container">
+        <h3 class="title">Start a Game?</h3>
+        <h4 class="subtitle">Server will select an English work and provide hints, try to guess the word in 10 tries or less.</h4>
+
+        <div class="field is-grouped is-grouped-centered">
+          <div class="control">
+            <button class="button" onclick="alert('New Game action')">New Game</button>
+          </div>
+          <div class="control">
+            <input class="input" id="resume-id" type="text" placeholder="Enter a Game ID" pattern="[A-Za-z]{3}-[0-9]{3}" title="Game id is 3 Letters - 3 Numbers e.g. abc-123" required>
+          </div>
+          <div class="control">
+            <button class="button" onclick="alert('Resume Game action')">Resume Game</button>
+          </div>
+
+          <div class="control">
+            <button class="button" onclick="alert('New Password action')">Add New Password with hints</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section is-hidden" id="new_password_section">
+      <div class="container">
+        <h3 class="title">Add New Password</h3>
+        <aside class="subtitle">
+          <h4>Password must be English word and not contain accents.</h4>
+          <h4>Between 10 to 15 hints must be provided.</h4>
+        </aside>
+        <form action="#" id="login_form" method="post">
+          <div class="field">
+            <label class="label" for="new_password">Password</label>
+            <div class="control">
+              <input id="new_password" class="input" type="text" placeholder="e.g. Swordfish" title="must be a lowercase english word" pattern="\w{3,}" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="new_hint1" class="label">Hint 1</label>
+            <div class="control">
+              <input id="new_hint1" class="input" type="text" placeholder="Add a hint to describe the password" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="new_hint2" class="label">Hint 2</label>
+            <div class="control">
+              <input id="new_hint2" class="input" type="text" placeholder="Add a hint to describe the password" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="new_hint3" class="label">Hint 3</label>
+            <div class="control">
+              <input id="new_hint3" class="input" type="text" placeholder="Add a hint to describe the password" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="new_hint4" class="label">Hint 4</label>
+            <div class="control">
+              <input id="new_hint4" class="input" type="text" placeholder="Add a hint to describe the password" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="new_hint5" class="label">Hint 5</label>
+            <div class="control">
+              <input id="new_hint5" class="input" type="text" placeholder="Add a hint to describe the password" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="new_hint6" class="label">Hint 6</label>
+            <div class="control">
+              <input id="new_hint6" class="input" type="text" placeholder="Add a hint to describe the password" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="new_hint7" class="label">Hint 7</label>
+            <div class="control">
+              <input id="new_hint7" class="input" type="text" placeholder="Add a hint to describe the password" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="new_hint8" class="label">Hint 8</label>
+            <div class="control">
+              <input id="new_hint8" class="input" type="text" placeholder="Add a hint to describe the password" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="new_hint9" class="label">Hint 9</label>
+            <div class="control">
+              <input id="new_hint9" class="input" type="text" placeholder="Add a hint to describe the password" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="new_hint10" class="label">Hint 10</label>
+            <div class="control">
+              <input id="new_hint10" class="input" type="text" placeholder="Add a hint to describe the password" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="new_hint11" class="label">Hint 11</label>
+            <div class="control">
+              <input id="new_hint11" class="input" type="text" placeholder="Add a hint to describe the password">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="new_hint12" class="label">Hint 12</label>
+            <div class="control">
+              <input id="new_hint12" class="input" type="text" placeholder="Add a hint to describe the password">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="new_hint13" class="label">Hint 13</label>
+            <div class="control">
+              <input id="new_hint13" class="input" type="text" placeholder="Add a hint to describe the password">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="new_hint14" class="label">Hint 14</label>
+            <div class="control">
+              <input id="new_hint14" class="input" type="text" placeholder="Add a hint to describe the password">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="new_hint15" class="label">Hint 15</label>
+            <div class="control">
+              <input id="new_hint15" class="input" type="text" placeholder="Add a hint to describe the password">
+            </div>
+          </div>
+
+          <div class="field is-grouped">
+            <p class="control">
+              <button type="submit" class="button is-primary"><strong>Login</strong></button>
+              <button type="reset" class="button is-danger" > Reset </button>
+            </p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </body>
+</html>

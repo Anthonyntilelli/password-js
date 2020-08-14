@@ -13,7 +13,12 @@ The word is not case sensitive.
 
 - Game
 
-- Words 
+- Words
   - World __have many__ hints (at leat 10)
 
-- Hints 
+- Hints
+
+
+## Thank you
+
+ - [Favicon.io](https://favicon.io/favicon-generator/)
