@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
     <link rel="stylesheet" href="/src/index.css">
     <!--JS-->
+    <script src="/src/GamePassword.js" async></script>
+    <script src="/src/SubmitAction.js" async></script>
+    <script src="/src/Flasher.js" defer></script>
     <script src="/src/index.js" defer></script>
   </head>
 
@@ -21,6 +24,12 @@
         <strong>Please Note:</strong> Website will not run without Javascript!
       </div>
     </noscript>
+
+    <div id="flash" class="notification is-hidden">
+      <button class="delete"></button>
+      <strong>Status:</strong> <span>Message Body.</span>
+    </div>
+
     <header class="hero is-primary">
       <div class="hero-body">
         <div class="container">
@@ -37,7 +46,7 @@
     </div>
     </header>
 
-    <section class="section is-hidden" id="info_section" >
+    <section id="info_section" class="section is-hidden" >
       <div class="container">
         <div class="columns">
           <div class="column">
@@ -56,7 +65,7 @@
       </div>
     </section>
 
-    <section class="section" id="start_game_section">
+    <section id="start_section" class="section">
       <div class="container">
         <h3 class="title">Start a Game?</h3>
         <h4 class="subtitle">Server will select an English work and provide hints, try to guess the word in 10 tries or less.</h4>
@@ -73,137 +82,136 @@
           </div>
 
           <div class="control">
-            <button class="button" onclick="alert('New Password action')">Add New Password with hints</button>
+            <button class="button" id="new_password_button">Add new password and hints</button>
           </div>
         </div>
       </div>
     </section>
 
-
-    <section class="section is-hidden" id="new_password_section">
+    <section id="new_password_section" class="section is-hidden">
       <div class="container">
         <h3 class="title">Add New Password</h3>
         <aside class="subtitle">
           <h4>Password must be English word and not contain accents.</h4>
           <h4>Between 10 to 15 hints must be provided.</h4>
         </aside>
-        <form action="#" id="login_form" method="post">
+        <form action="#" id="new_password_form" method="post">
           <div class="field">
             <label class="label" for="new_password">Password</label>
             <div class="control">
-              <input id="new_password" class="input" type="text" placeholder="e.g. Swordfish" title="must be a lowercase english word" pattern="\w{3,}" required>
+              <input id="new_password" class="input item-passwd" spellcheck="true" type="text" placeholder="e.g. swordfish" title="must be a lowercase english word" pattern="^[a-z]{3,}$" minlength="3" required>
             </div>
           </div>
 
           <div class="field">
             <label for="new_hint1" class="label">Hint 1</label>
             <div class="control">
-              <input id="new_hint1" class="input" type="text" placeholder="Add a hint to describe the password" required>
+              <input id="new_hint1" class="input item-hint" spellcheck="true" type="text" placeholder="Add a hint to describe the password" minlength="4"  maxlength="140" required>
             </div>
           </div>
 
           <div class="field">
             <label for="new_hint2" class="label">Hint 2</label>
             <div class="control">
-              <input id="new_hint2" class="input" type="text" placeholder="Add a hint to describe the password" required>
+              <input id="new_hint2" class="input item-hint" spellcheck="true" type="text" placeholder="Add a hint to describe the password" minlength="4"  maxlength="140" required>
             </div>
           </div>
 
           <div class="field">
             <label for="new_hint3" class="label">Hint 3</label>
             <div class="control">
-              <input id="new_hint3" class="input" type="text" placeholder="Add a hint to describe the password" required>
+              <input id="new_hint3" class="input item-hint" spellcheck="true" type="text" placeholder="Add a hint to describe the password" minlength="4"  maxlength="140" required>
             </div>
           </div>
 
           <div class="field">
             <label for="new_hint4" class="label">Hint 4</label>
             <div class="control">
-              <input id="new_hint4" class="input" type="text" placeholder="Add a hint to describe the password" required>
+              <input id="new_hint4" class="input item-hint" spellcheck="true" type="text" placeholder="Add a hint to describe the password" minlength="4"  maxlength="140" required>
             </div>
           </div>
 
           <div class="field">
             <label for="new_hint5" class="label">Hint 5</label>
             <div class="control">
-              <input id="new_hint5" class="input" type="text" placeholder="Add a hint to describe the password" required>
+              <input id="new_hint5" class="input item-hint" spellcheck="true" type="text" placeholder="Add a hint to describe the password" minlength="4"  maxlength="140" required>
             </div>
           </div>
 
           <div class="field">
             <label for="new_hint6" class="label">Hint 6</label>
             <div class="control">
-              <input id="new_hint6" class="input" type="text" placeholder="Add a hint to describe the password" required>
+              <input id="new_hint6" class="input item-hint" spellcheck="true" type="text" placeholder="Add a hint to describe the password" minlength="4"  maxlength="140" required>
             </div>
           </div>
 
           <div class="field">
             <label for="new_hint7" class="label">Hint 7</label>
             <div class="control">
-              <input id="new_hint7" class="input" type="text" placeholder="Add a hint to describe the password" required>
+              <input id="new_hint7" class="input item-hint" spellcheck="true" type="text" placeholder="Add a hint to describe the password" minlength="4"  maxlength="140" required>
             </div>
           </div>
 
           <div class="field">
             <label for="new_hint8" class="label">Hint 8</label>
             <div class="control">
-              <input id="new_hint8" class="input" type="text" placeholder="Add a hint to describe the password" required>
+              <input id="new_hint8" class="input item-hint" spellcheck="true" type="text" placeholder="Add a hint to describe the password" minlength="4"  maxlength="140" required>
             </div>
           </div>
 
           <div class="field">
             <label for="new_hint9" class="label">Hint 9</label>
             <div class="control">
-              <input id="new_hint9" class="input" type="text" placeholder="Add a hint to describe the password" required>
+              <input id="new_hint9" class="input item-hint" spellcheck="true" type="text" placeholder="Add a hint to describe the password" minlength="4"  maxlength="140" required>
             </div>
           </div>
 
           <div class="field">
             <label for="new_hint10" class="label">Hint 10</label>
             <div class="control">
-              <input id="new_hint10" class="input" type="text" placeholder="Add a hint to describe the password" required>
+              <input id="new_hint10" class="input item-hint" spellcheck="true" type="text" placeholder="Add a hint to describe the password" minlength="4"  maxlength="140" required>
             </div>
           </div>
 
           <div class="field">
             <label for="new_hint11" class="label">Hint 11</label>
             <div class="control">
-              <input id="new_hint11" class="input" type="text" placeholder="Add a hint to describe the password">
+              <input id="new_hint11" class="input item-hint" spellcheck="true" type="text" placeholder="Add a hint to describe the password" minlength="4"  maxlength="140">
             </div>
           </div>
 
           <div class="field">
             <label for="new_hint12" class="label">Hint 12</label>
             <div class="control">
-              <input id="new_hint12" class="input" type="text" placeholder="Add a hint to describe the password">
+              <input id="new_hint12" class="input item-hint" spellcheck="true" type="text" placeholder="Add a hint to describe the password" minlength="4"  maxlength="140">
             </div>
           </div>
 
           <div class="field">
             <label for="new_hint13" class="label">Hint 13</label>
             <div class="control">
-              <input id="new_hint13" class="input" type="text" placeholder="Add a hint to describe the password">
+              <input id="new_hint13" class="input item-hint" spellcheck="true" type="text" placeholder="Add a hint to describe the password" minlength="4"  maxlength="140">
             </div>
           </div>
 
           <div class="field">
             <label for="new_hint14" class="label">Hint 14</label>
             <div class="control">
-              <input id="new_hint14" class="input" type="text" placeholder="Add a hint to describe the password">
+              <input id="new_hint14" class="input item-hint" spellcheck="true" type="text" placeholder="Add a hint to describe the password" minlength="4"  maxlength="140">
             </div>
           </div>
 
           <div class="field">
             <label for="new_hint15" class="label">Hint 15</label>
             <div class="control">
-              <input id="new_hint15" class="input" type="text" placeholder="Add a hint to describe the password">
+              <input id="new_hint15" class="input item-hint" spellcheck="true" type="text" placeholder="Add a hint to describe the password" minlength="4"  maxlength="140">
             </div>
           </div>
 
           <div class="field is-grouped">
             <p class="control">
-              <button type="submit" class="button is-primary"><strong>Login</strong></button>
-              <button type="reset" class="button is-danger" > Reset </button>
+              <button type="submit" class="button is-primary"><strong>Submit</strong></button>
+              <button id="new_password_cancel_button" type="reset" class="button is-danger" > Cancel </button>
             </p>
           </div>
         </form>
