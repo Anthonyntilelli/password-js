@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_14_145813) do
+ActiveRecord::Schema.define(version: 2020_08_17_010123) do
+
+  create_table "games", force: :cascade do |t|
+    t.integer "password_id", null: false
+    t.integer "turn", null: false
+    t.boolean "completed", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "hints", force: :cascade do |t|
     t.integer "password_id", null: false

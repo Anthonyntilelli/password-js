@@ -17,6 +17,11 @@ class Password < ApplicationRecord
     hints.all.count >= 10
   end
 
+  # Return Random ready password
+  def self.random_ready
+    all.shuffle.find(&:ready?)
+  end
+
   private
 
   def normalize_word

@@ -1,21 +1,29 @@
 'use strict'
 
+const FLASH = new Flasher();
+const INFO_SECTION = new InfoBanner();
+const GAME_SECTION = new PlayArea();
+
 // *** Notable IDs ***
 const START_SECTION = document.getElementById("start_section");
 const NEW_PASSWD_SECTION = document.getElementById("new_password_section");
 const RESUME_GAME_INPUT = document.getElementById("resume-id");
 const NEW_PASSWD_FORM = document.getElementById("new_password_form");
-const FLASH = new Flasher();
+const GAME_FORM = document.getElementById("game_form");
+const NEW_GAME_BUTTON = document.getElementById("new_game_button");
 
 // *** Functions ***
-const resetPageView = () => {
+const resetPage = () => {
   START_SECTION.className = "section";
   NEW_PASSWD_SECTION.className = "section is-hidden";
+  INFO_SECTION.clear()
+  GAME_SECTION.clear()
   formClears();
 };
 
 const formClears = () => {
   NEW_PASSWD_FORM.reset();
+  GAME_FORM.reset();
   RESUME_GAME_INPUT.value = null;
 };
 
@@ -32,6 +40,19 @@ const toggleloadingButton = (button) => {
   }
 };
 
+const errorAction = (message) => {
+  console.error(message);
+  if (confirm("Unexpected Error.\nPress ok to reload page?")) {window.location.reload(true); }
+}
+
+const startGame = (id, lives, hint) => {
+  formClears();
+  START_SECTION.className = "section is-hidden";
+  INFO_SECTION.set(id, lives);
+  GAME_SECTION.start(hint)
+  //TODO: POPULATE History
+}
+
 // *** Event Listeners ***
 
 // Enable add new password Section
@@ -42,7 +63,7 @@ document.getElementById("new_password_button").addEventListener("click", () => {
 });
 
 //Cancel add new password Section
-document.getElementById("new_password_cancel_button").addEventListener("click", resetPageView);
+document.getElementById("new_password_cancel_button").addEventListener("click", resetPage);
 
 // Submit new password and hints
 NEW_PASSWD_SECTION.addEventListener("submit",  (event) => {
@@ -50,12 +71,12 @@ NEW_PASSWD_SECTION.addEventListener("submit",  (event) => {
   const OkButtonAndFlash = (response) => {
     toggleloadingButton(SUBMIT_BUTTON)
     FLASH.success("Submit complete");
-    resetPageView()
+    resetPage()
   }
   const NotButtonAndFlash = (response) => {
     toggleloadingButton(SUBMIT_BUTTON)
-    FLASH.error(response);
-    resetPageView()
+    FLASH.error(response.status);
+    resetPage()
   }
 
   event.preventDefault();
@@ -66,12 +87,25 @@ NEW_PASSWD_SECTION.addEventListener("submit",  (event) => {
     const gp = new GamePassword(passwd, hints);
     console.info("GamePassword created successfully.");
     toggleloadingButton(SUBMIT_BUTTON);
-    SubmitAction.post("/passwords", gp, OkButtonAndFlash, NotButtonAndFlash, console.error);
+    SubmitAction.post("/passwords", {passwords: gp }, OkButtonAndFlash, NotButtonAndFlash, errorAction);
   } catch (error) {
      console.error(error.message);
      FLASH.error(error.message);
   }
 });
 
-// Clear flash message and quit
-FLASH.quitButton.addEventListener("click", () => FLASH.clear());
+// Start a new Game
+NEW_GAME_BUTTON.addEventListener("click", () => {
+  event.preventDefault();
+  toggleloadingButton(NEW_GAME_BUTTON);
+  const start_new_game = (response) => {
+    toggleloadingButton(NEW_GAME_BUTTON);
+    startGame(response.game_id, response.lives_left, response.current_hint);
+  }
+  const NotButtonAndFlash = (response) => {
+    toggleloadingButton(NEW_GAME_BUTTON)
+    FLASH.error(response.status);
+    resetPage();
+  }
+  SubmitAction.post('/games', { games: { action: 'new' }}, start_new_game, NotButtonAndFlash, errorAction);
+});

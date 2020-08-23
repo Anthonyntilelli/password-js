@@ -25,9 +25,11 @@ class SubmitAction {
     fetch(url, configObj)
    .then(response => {
      if (response.ok) {
-      response.json().then(data => resolveOK(data));
+      response.json().then(data => resolveOK(data))
+      .catch(error => reject(error.message));
      } else {
-      response.json().then(data => resolveNotOK(data));
+      response.json().then(data => resolveNotOK(data))
+      .catch(error => reject(error.message));
      }
     })
    .catch(error => reject(error.message));

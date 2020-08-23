@@ -22,3 +22,4 @@ The word is not case sensitive.
 ## Thank you
 
  - [Favicon.io](https://favicon.io/favicon-generator/)
+ - [Placeholder.com](https://placeholder.com/)

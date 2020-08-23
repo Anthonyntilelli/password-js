@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Rails/Output
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
 #
@@ -10,8 +11,10 @@
 
 Password.destroy_all
 Hint.destroy_all
+Game.destroy_all
 
 # Password Ready (enough hint)
+puts 'Setting up Passwords and Hints'
 pass1 = Password.create!(word: 'test', win_count: 0, loss_count: 0)
 (1..10).each do |i|
   pass1.hints.create!(message: "Hint #{i} for test", shown: 0)
@@ -23,3 +26,15 @@ raise 'Pass 1 should be ready' unless pass1.ready?
 pass2 = Password.create!(word: 'cat', win_count: 0, loss_count: 0)
 pass2.hints.create!(message: 'Meow', shown: 0)
 raise 'Pass 2 should not be ready' if pass2.ready?
+
+puts 'Make Game'
+
+# Fresh Game
+Game.new_game
+# Finished game
+game = Game.new_game
+(1..10).each do |i|
+  game.guess("AAA#{i}")
+end
+
+# rubocop:enable Rails/Output

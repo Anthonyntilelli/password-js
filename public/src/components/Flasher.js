@@ -10,6 +10,9 @@ class Flasher {
     if (this._HTML_BODY === null ) throw new Error('Cannot find flash html body');
 
     this.quitButton = this._HTML_BODY.getElementsByTagName("button")[0]
+    // Clear flash message and quit
+    this.quitButton.addEventListener("click", () => this.clear());
+
     // Mark class as ready
     Flasher._instance = this;
   }
