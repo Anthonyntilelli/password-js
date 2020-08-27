@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 // Submit action with Fetch.
 class SubmitAction {
@@ -6,10 +6,22 @@ class SubmitAction {
   // resolveOK - action on a 2xx.
   // resolveNotOK - action when not 2xx.
   // reject - action on network failure or permission issue.
-  static post(path, bodyObj, resolveOK, resolveNotOK, reject){
-    const url = `${window.location.protocol}//${window.location.host}` + path;
-    const configObj = this._mkConfigObj('POST', bodyObj);
-    this._fetchRequest(url, configObj,  resolveOK, resolveNotOK, reject)
+ static get(path, resolveOK, resolveNotOK, reject){
+  const configObj = this._mkConfigObj('GET', null);
+  configObj.body = undefined;
+  this._fetchRequest(path, configObj,  resolveOK, resolveNotOK, reject)
+}
+static post(path, bodyObj, resolveOK, resolveNotOK, reject){
+  const configObj = this._mkConfigObj('POST', bodyObj);
+  this._fetchRequest(path, configObj,  resolveOK, resolveNotOK, reject)
+}
+  static put(path, bodyObj, resolveOK, resolveNotOK, reject){
+    const configObj = this._mkConfigObj('PUT', bodyObj);
+    this._fetchRequest(path, configObj,  resolveOK, resolveNotOK, reject)
+  }
+  static delete(path, bodyObj, resolveOK, resolveNotOK, reject){;
+    const configObj = this._mkConfigObj('DELETE', bodyObj);
+    this._fetchRequest(path, configObj,  resolveOK, resolveNotOK, reject)
   }
   static _mkConfigObj(method, bodyObj){
     return {
@@ -21,7 +33,8 @@ class SubmitAction {
       body: JSON.stringify(bodyObj)
     };
   }
-  static _fetchRequest(url, configObj, resolveOK, resolveNotOK, reject) {
+  static _fetchRequest(path, configObj, resolveOK, resolveNotOK, reject) {
+    const url = `${window.location.protocol}//${window.location.host}` + path;
     fetch(url, configObj)
    .then(response => {
      if (response.ok) {

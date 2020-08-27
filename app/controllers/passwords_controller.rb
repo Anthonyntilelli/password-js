@@ -4,9 +4,9 @@
 class PasswordsController < ApplicationController
   def create
     stong_params_create
-    pass = Password.create!(word: @word, win_count: 0, loss_count: 0)
+    pass = Password.create!(word: @word)
     @hints.each do |hint|
-      pass.hints.create!(message: hint, shown: 0)
+      pass.hints.create!(message: hint)
     end
     render json: { status: 'ok' }, status: :created
   rescue ActionController::ParameterMissing => e

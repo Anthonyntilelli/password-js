@@ -10,13 +10,17 @@
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <!-- CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
-    <link rel="stylesheet" href="/src/index.css">
     <!--JS-->
     <script src="/src/Game.js" async></script>
     <script src="/src/GamePassword.js" async></script>
     <script src="/src/SubmitAction.js" async></script>
+    <script src="/src/components/BaseDisplay.js" async></script>
+    <script src="/src/components/GameDisplay.js" defer></script>
     <script src="/src/components/Flasher.js" defer></script>
+    <script src="/src/components/StartArea.js" defer></script>
+    <script src="/src/components/PasswordArea.js" defer></script>
     <script src="/src/components/InfoBanner.js" defer></script>
+    <script src="/src/components/endBanner.js" defer></script>
     <script src="/src/components/PlayArea.js" defer></script>
     <script src="/src/index.js" defer></script>
   </head>
@@ -43,11 +47,21 @@
             <img src="https://via.placeholder.com/150x90?text=Password=150x90" alt="logo" style="width:auto;">
           </picture>
           <h1 class="title">Password</h1>
-          <h2 class="subtitle"> Can you get the word in 10 trys!</h2>
+          <h2 class="subtitle"> Can you guess the word in 5 trys!</h2>
         </div>
       </div>
-    </div>
     </header>
+
+    <br/>
+    <section id="end_section" class="section is-hidden" >
+      <div class="container">
+        <div class="columns">
+          <div class="column">
+            <p class="notification" id="end_banner"> {FILLER TEXT}</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <section id="info_section" class="section is-hidden" >
       <div class="container">
@@ -56,34 +70,29 @@
             <p class="notification is-primary">Game ID:</p>
           </div>
           <div class="column">
-            <p class="notification is-info" data-id="#" id="info_id">#</p>
+            <p class="notification is-info" id="info_id">#</p>
           </div>
           <div class="column">
             <p class="notification is-primary">Tries Left:</p>
           </div>
           <div class="column">
-            <p class="notification is-info" data-lives="#" id="info_lives">#</p>
+            <p class="notification is-info"  id="info_lives">#</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="start_section" class="section">
+    <section id="start_section" class="section is-hidden">
       <div class="container">
         <h3 class="title">Start a Game?</h3>
-        <h4 class="subtitle">Server will select an English work and provide hints, try to guess the word in 10 tries or less.</h4>
-
+        <h4 class="subtitle">Server will select an English work and provide hints, try to guess the word in 5 tries or less.</h4>
         <div class="field is-grouped is-grouped-centered">
           <div class="control">
             <button class="button" id="new_game_button">New Game</button>
           </div>
           <div class="control">
-            <input class="input" id="resume-id" type="text" placeholder="Enter a Game ID" pattern="[0-9]{1,}" title="Game id is 3 Letters - 3 Numbers e.g. abc-123" required>
+            <button class="button is-hidden" id="resume_game_button">Resume Game</button>
           </div>
-          <div class="control">
-            <button class="button" onclick="alert('Resume Game action')">Resume Game</button>
-          </div>
-
           <div class="control">
             <button class="button" id="new_password_button">Add new password and hints</button>
           </div>
@@ -95,8 +104,8 @@
       <div class="container">
         <h3 class="title">Add New Password</h3>
         <aside class="subtitle">
-          <h4>Password must be a English word and not contain accents.</h4>
-          <h4>Enter 10 hints to describe the password.</h4>
+          <h4>Password must be an English word and not contain accents.</h4>
+          <h4>Enter 5 hints to describe the password.</h4>
         </aside>
         <form action="#" id="new_password_form" method="post">
           <div class="field">
@@ -141,41 +150,6 @@
             </div>
           </div>
 
-          <div class="field">
-            <label for="new_hint6" class="label">Hint 6</label>
-            <div class="control">
-              <input id="new_hint6" class="input item-hint" spellcheck="true" type="text" placeholder="Add a hint to describe the password" minlength="4"  maxlength="140" required>
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="new_hint7" class="label">Hint 7</label>
-            <div class="control">
-              <input id="new_hint7" class="input item-hint" spellcheck="true" type="text" placeholder="Add a hint to describe the password" minlength="4"  maxlength="140" required>
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="new_hint8" class="label">Hint 8</label>
-            <div class="control">
-              <input id="new_hint8" class="input item-hint" spellcheck="true" type="text" placeholder="Add a hint to describe the password" minlength="4"  maxlength="140" required>
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="new_hint9" class="label">Hint 9</label>
-            <div class="control">
-              <input id="new_hint9" class="input item-hint" spellcheck="true" type="text" placeholder="Add a hint to describe the password" minlength="4"  maxlength="140" required>
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="new_hint10" class="label">Hint 10</label>
-            <div class="control">
-              <input id="new_hint10" class="input item-hint" spellcheck="true" type="text" placeholder="Add a hint to describe the password" minlength="4"  maxlength="140" required>
-            </div>
-          </div>
-
           <div class="field is-grouped">
             <p class="control">
               <button type="submit" class="button is-primary"><strong>Submit</strong></button>
@@ -190,8 +164,8 @@
       <div class="container">
           <h3 class="title">Guess the Password</h3>
           <aside class="subtitle">
-            <h4>Password wil be a English word and not contain accents.</h4>
-            <h4>Current hint: <span id="item-hint">{hint}<span></h4>
+            <h4>Password will be an English word and not contain accents.</h4>
+            <h4>Current hint: <span id="item-hint">{hint}</span></h4>
           </aside>
           <form action="#" id="game_form" method="post">
             <div class="field">
@@ -203,8 +177,9 @@
 
             <div class="field is-grouped">
               <p class="control">
-                <button id="guess_button"  type="submit" value="guess" class="button is-primary"><strong>Submit</strong></button>
-                <button id="surrender_button" type="button" value="surrender" class="button is-danger" > <em>Surrender<em> </button>
+                <button id="guess_button" type="submit" value="guess" class="button is-primary"><strong>Guess</strong></button>
+                <button id="surrender_button" type="button" value="surrender" class="button is-danger"> <em>Surrender</em></button>
+                <button id="new_game_in_game_section" type="button" value="surrender" class="button is-info is-hidden"> <em>New Game</em></button>
               </p>
             </div>
           </form>
@@ -214,20 +189,22 @@
 
     <section id="history_section" class="section is-hidden">
       <div class="container">
+        <h3 class="title">Past Attempts:</h3>
+        <hr />
+        <!-- Template working area -->
+        <div class="columns"></div>
 
       </div>
     </section>
 
     <!-- For history_section -->
-    <template id="history_template">
-      <div class="columns">
-        <section class="column">
-          <h5>Try: <span>#<span><h5>
-          <h5>Guess: <span>{User's Guess}<span></h5>
-          <p>Hint:<span>{hint}<span></p>
-        </section>
+    <div class="is-hidden">
+        <aside class="column notification is-info" id="history_template">
+          <p>Guess: <span>{Guess}</span></p>
+          <p>Hint: <span>{hint}</span></p>
+          <p>Correct: <span>{correct}</span></p>
+        </aside>
       </div>
-    </template>
 
   </body>
 </html>

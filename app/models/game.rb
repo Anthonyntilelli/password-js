@@ -2,10 +2,13 @@
 
 # Game Model
 class Game < ApplicationRecord
-  validates :password_id, numericality: { only_integer: true }
-  validates :turn, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-  validates :completed, inclusion: { in: [true, false] }
+  has_many :guesses, dependent: :destroy
 
+  validates :password_id, numericality: { only_integer: true }
+  validates :game_state,
+            inclusion: { in: %w[active won lost], message: 'game_state must be either active, won or lost.' }
+
+  # Loose connection to password
   def password
     Password.find(password_id)
   end
@@ -16,32 +19,50 @@ class Game < ApplicationRecord
     self.password_id = password.id
   end
 
-  # Return trun or false and increments turn.
-  def guess(word)
-    completed?
+  # Only gives password when game if over
+  def restricted_password
+    return nil if game_state == 'active'
 
-    if word.downcase == password.word
-      self.completed = true
-      correct = true
-    else
-      self.turn += 1
-      correct = false
-    end
+    password.word
+  end
 
-    self.completed = true if self.turn >= 10
+  # Return true or false and increments turn.
+  def make_guess(word)
+    raise_if_complete
 
+    correct = word.downcase == password.word
+    guesses.create!(word: word, correct: correct)
+    self.game_state = 'lost' if lives_left.zero?
+    self.game_state = 'won' if correct
     save!
     correct
   end
 
   def current_hint
-    completed?
+    return 'None: Game completed' unless game_state == 'active'
 
-    Game.first.password.hints[turn].message
+    password.hints[guesses.count].message
   end
 
   def lives_left
-    10 - self.turn
+    return 0 unless game_state == 'active'
+
+    5 - guesses.count
+  end
+
+  # Create a readable pairing
+  def history
+    # ... Go up to latest not include
+    (0...guesses.count).map do |i|
+      { guess: guesses[i].word, hint: password.hints[i].message, correct: guesses[i].correct }
+    end
+  end
+
+  def surrender
+    raise_if_complete
+
+    self.game_state = 'lost'
+    save!
   end
 
   # Create and return a new  game
@@ -49,15 +70,14 @@ class Game < ApplicationRecord
     game = Game.new
     password = Password.random_ready
     game.password = password
-    game.turn = 0
-    game.completed = false
+    game.game_state = 'active'
     game.save!
     game
   end
 
   private
 
-  def completed?
-    raise 'Game Already completed' if completed
+  def raise_if_complete
+    raise 'Game Already completed' unless game_state == 'active'
   end
 end

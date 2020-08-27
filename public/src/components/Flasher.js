@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 // Controlls flash massage on page.
 class Flasher {

@@ -1,47 +1,41 @@
-'use strict'
+'use strict';
 
 // Controls InfoBanner.
-class InfoBanner {
+class InfoBanner extends GameDisplay{
   constructor(){
-    // Only on instance of flash
+    super();
+
+    // Only on instance of InfoBanner
     if (InfoBanner._instance) throw new Error('InfoBanner is already has an instance.');
-    // Fail if it cannot find flash html body
-    this._HTML_BODY =  document.getElementById("info_section");
-    this._INFO_ID = document.getElementById("info_id");
-    this._INFO_LIVES = document.getElementById("info_lives");
-    if (this._HTML_BODY === null ) throw new Error('Cannot find InfoBanner html body');
-    if (this._INFO_ID === null ) throw new Error('Cannot find id html body');
-    if (this._INFO_LIVES === null ) throw new Error('Cannot find Lives in html body');
+
+    const elements = this._load_html_elements_by_id('info_section', 'info_id', 'info_lives');
+    this._HTML_BODY = elements[0];
+    this._INFO_ID = elements[1];
+    this._INFO_LIVES = elements[2];
 
     // Mark class as ready
     InfoBanner._instance = this;
   }
+
   clear(){
-    this._HTML_BODY.classList = "section is-hidden";
+    this._make_hidden(this._HTML_BODY);
     this._INFO_ID.innerText = "#";
     this._INFO_LIVES.innerText = "#";
-    this._INFO_ID.dataset.id = "#";
-    this._INFO_LIVES.dataset.lives = "#";
   }
-  // Make visible and set info
-  set(id, lives){
-    if (typeof id !== "number" ) throw new Error("id must be a number");
-    if (typeof lives !== "number" ) throw new Error("lives must be a number");
-    this._HTML_BODY.classList = "section";
-    this._INFO_ID.innerText = id;
-    this._INFO_LIVES.innerText = lives;
-    this._INFO_ID.dataset.id = id;
-    this._INFO_LIVES.dataset.lives = lives;
-  }
-  decrement_lives() {
 
-    let life = this.lives;
-    if (isNaN(life)) throw new Error("lives not set.");
-    life--;
-    if (life < 0 ) throw new Error("lives cannot be less then zero.");
-    this._INFO_LIVES.dataset.lives = life;
-    this._INFO_LIVES.innerText = life;
+  // Make visible and set info
+  show(game){
+    super.show(game)
+    // go away when not active
+    if(game.game_state !== "active"){
+      this.clear();
+      return
+    }
+    this._INFO_ID.innerText = game.id;
+    if (game.active)
+      this._INFO_LIVES.innerText = game.lives;
+    else
+      this._INFO_LIVES.innerText = game.game_state;
+    this._make_visible(this._HTML_BODY)
   }
-  get lives() { return parseInt(this._INFO_LIVES.dataset.lives) }
-  get id() { return parseInt(this._INFO_ID.dataset.id) }
 }

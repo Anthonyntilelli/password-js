@@ -10,20 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_17_010123) do
+ActiveRecord::Schema.define(version: 2020_08_23_231540) do
 
   create_table "games", force: :cascade do |t|
     t.integer "password_id", null: false
-    t.integer "turn", null: false
-    t.boolean "completed", null: false
+    t.text "game_state", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "guesses", force: :cascade do |t|
+    t.integer "game_id", null: false
+    t.text "word", null: false
+    t.boolean "correct", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["game_id"], name: "index_guesses_on_game_id"
   end
 
   create_table "hints", force: :cascade do |t|
     t.integer "password_id", null: false
     t.text "message", null: false
-    t.integer "shown", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["password_id"], name: "index_hints_on_password_id"
@@ -31,8 +38,6 @@ ActiveRecord::Schema.define(version: 2020_08_17_010123) do
 
   create_table "passwords", force: :cascade do |t|
     t.text "word", null: false
-    t.integer "win_count", null: false
-    t.integer "loss_count", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

@@ -6,7 +6,6 @@ class CreateHints < ActiveRecord::Migration[6.0]
     create_table :hints do |t|
       t.references :password, null: false
       t.text :message, null: false
-      t.integer :shown, null: false
 
       t.timestamps
     end
