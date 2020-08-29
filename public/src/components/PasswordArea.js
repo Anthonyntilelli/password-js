@@ -40,7 +40,7 @@ class PasswordArea extends BaseDisplay{
     for (const item of hintEntries){
       if (!item.checkValidity()) {throw new Error(`${item.value} is not valid`);}
       hints.push(item.value)
-    };
+    }
     return hints;
   }
 }

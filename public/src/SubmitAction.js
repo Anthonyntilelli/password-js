@@ -19,7 +19,7 @@ static post(path, bodyObj, resolveOK, resolveNotOK, reject){
     const configObj = this._mkConfigObj('PUT', bodyObj);
     this._fetchRequest(path, configObj,  resolveOK, resolveNotOK, reject)
   }
-  static delete(path, bodyObj, resolveOK, resolveNotOK, reject){;
+  static delete(path, bodyObj, resolveOK, resolveNotOK, reject){
     const configObj = this._mkConfigObj('DELETE', bodyObj);
     this._fetchRequest(path, configObj,  resolveOK, resolveNotOK, reject)
   }

@@ -25,7 +25,9 @@ class Game {
 
   update(id, lives, current_hint, history, game_state, password){
     let new_id = false;
-    if (id !== this._id) { new_id = true; }
+    let game_over = false;
+    if (id !== this._id) new_id = true;
+    if ((this.active) && (game_state !== 'active')) game_over = true;
     if ((typeof id !== "number") || (id <= 0)) throw new Error("Id must be a positive number");
     if ((typeof lives !== "number") || (lives < -1) || lives > 6) {
        throw new Error(`Lives ${lives} invalid: must be number between 0 - 5 (0 if game completed)`); }
@@ -41,6 +43,14 @@ class Game {
     if (new_id){
       if (typeof(Storage) !== "undefined") {
         localStorage.id = this.id;
+      } else {
+        console.warn("WebStorageAPI not supported: Skipping game id store");
+      }
+    }
+
+    if (game_over){
+      if (typeof(Storage) !== "undefined") {
+        delete localStorage.id
       } else {
         console.warn("WebStorageAPI not supported: Skipping game id store");
       }
