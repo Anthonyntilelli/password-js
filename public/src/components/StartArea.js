@@ -17,7 +17,7 @@ class StartArea extends BaseDisplay{
       this._storage_supported = true;
     } else {
       this._storage_supported = false;
-      console.warn("Webstorage not supported: Game resume option disabled");
+      console.warn("WebStorage not supported: Game resume option disabled");
     }
 
     // Mark class as ready
@@ -29,8 +29,9 @@ class StartArea extends BaseDisplay{
   show(){
     if ((this._storage_supported) && (localStorage.id !== undefined)) {
       this._make_visible(this.RESUME_GAME_BUTTON)
+    } else {
+      this._make_hidden(this.RESUME_GAME_BUTTON)
     }
     this._make_visible(this.HTML_BODY)
-
   }
 }

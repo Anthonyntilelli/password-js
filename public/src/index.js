@@ -179,8 +179,10 @@ START_SECTION.RESUME_GAME_BUTTON.addEventListener("click", () => {
   const NotButtonAndFlash = (response) => {
     toggleloadingButton(START_SECTION.RESUME_GAME_BUTTON);
     FLASH.error(response.status);
+    game.clear();
     resetPage();
   }
+
   toggleloadingButton(START_SECTION.RESUME_GAME_BUTTON);
   SubmitAction.get(`/games/${localStorage.id}`, playgame, NotButtonAndFlash, errorAction);
 });

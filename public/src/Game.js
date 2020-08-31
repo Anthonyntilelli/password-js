@@ -56,4 +56,18 @@ class Game {
       }
     }
   }
+
+  // Ends game and deletes saved id
+  clear(){
+    this._id = -1;
+    this._lives = 0;
+    this._current_hint = 'GAME ENDED';
+    this._history = 'lost';
+
+    if (typeof(Storage) !== "undefined") {
+      delete localStorage.id
+    } else {
+      console.warn("WebStorageAPI not supported: Skipping game id store");
+    }
+  }
 }
